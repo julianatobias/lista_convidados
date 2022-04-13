@@ -5,37 +5,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Convidados</title>
+    <link rel="stylesheet" href="teste.css">
+
 </head>
 
 <body>
+    
+    <!--Inicio lista dos usuarios -->
     <h1>Lista de Convidados</h1>
     <div id="app">
-        <ul>
-            <li>Juliana
-                <a href="#">Excluir</a>
-            </li>
-            <li>Gabriel
-                <a href="#">Excluir</a>
-            </li>
-            <li>Gildex
-                <a href="#">Excluir</a>
-            </li>
-        </ul>
-            <input id="campo" type="text" placeholder="Digite o nome do convidado" id="">
-             <button id="botao">Cadastrar</button>
+        <ul id="lista"></ul>
 
+        <input id="campo_nome" type="text" placeholder="Digite o nome do convidado">
+        <input id="campo_idade" type="text" placeholder="Digite a idade do convidado">
+        <!-- Inicio Botão Cadastrar convidado-->
+        <button id="botao">Cadastrar</button>
+        <!-- Fim Botão Cadastrar convidado-->
     </div>
     <script type="text/javascript">
-        var lista = document.getElementById("lista");
-        var lista = document.getElementById("campo");
-        var lista = document.getElementById("botao");
 
+        // Inicio variavel para documentar as listas
+        var elLista = document.getElementById("lista");
+        var elCampo_nome = document.getElementById("campo_nome");
+        var elCampo_idade = document.getElementById("campo_idade");
+        var elBotao = document.getElementById("botao");
+        // Fim de variavel para documentar as listas
+
+        // Inicio array em Json dos convidados
         var convidados = [
-            {id: 1, nome: "Juliana Tobias", idade: 22},
-            {id: 2, nome: "Gabriel Freitas", idade: 18},
-            {id: 3, nome: "Gildo Junior", idade: 19}
+            { nome: "Juliana Tobias", idade: 22 },
+            { nome: "Gabriel Freitas", idade: 18 },
+            { nome: "Gildo Junior", idade: 19 }
         ];
+        // Fim de array dos convidados
         
+        //É chamado pela function adicionarConvidado
+        function listarConvidados(){
+            //Limpa a lista, para poder inserir o novo convidado
+            elLista.innerHTML = ""
+
+            for (convidado of convidados) {
+                var elConvidado = document.createElement("li");
+                var elConv = document.createTextNode(`Nome: ${convidado.nome}, Idade: ${convidado.idade}`);
+    
+                elConvidado.appendChild(elConv);
+                elLista.appendChild(elConvidado);
+    
+            }
+        }
+
+
+        listarConvidados();
+
+        //É chamado toda vez que alguem clica no botao
+        var adicionarConvidado = function () {
+            var nome = elCampo_nome.value;
+            var idade = elCampo_idade.value;
+            convidados.push({ nome: nome, idade: idade });
+            elCampo_nome.value = "";
+            elCampo_idade.value = "";
+
+            listarConvidados();
+
+        };
+        elBotao.onclick = adicionarConvidado;
+
     </script>
 
 </body>
