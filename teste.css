@@ -1,5 +1,35 @@
+*{
+    font: bold 15px Times, serif;
+    background-color: rgb(255, 255, 255);
+    position: relative;
+}
+/*Tirando a ul: bolinha e colocando numeração pelo javaScript no index.html*/
 ul{
-    list-style:none;
+    list-style-type: none;
     padding-left:0;
+}
 
+/*Div que percorre toda a lista*/
+.ls{
+    margin-left: 260px;
+    margin-top: 15vw;
+}
+/*Titulo*/
+h1{
+    margin-left: 29vw;
+    top: 50px;
+    font-size: 8vh;
+}
+/* Div Botão cadastrar*/
+.botaoo{
+        border-bottom-left-radius: 40px;
+        color: white;
+        margin-left: 24vw;
+        margin-top: 3vw;        
+}
+input{
+    width: 60vh;
+    height: 5vh;
+    margin-right: 40px;
+    margin-left: -30px;
 }

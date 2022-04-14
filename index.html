@@ -10,68 +10,112 @@
 </head>
 
 <body>
-    
     <!--Inicio lista dos usuarios -->
     <h1>Lista de Convidados</h1>
-    <div id="app">
-        <ul id="lista"></ul>
 
-        <input id="campo_nome" type="text" placeholder="Digite o nome do convidado">
-        <input id="campo_idade" type="text" placeholder="Digite a idade do convidado">
-        <!-- Inicio Botão Cadastrar convidado-->
-        <button id="botao">Cadastrar</button>
+    <div class="ls">
+        <div id="app">
+            <ul id="lista"></ul>
+            <!--Bloco de digitação com id: dos campos, type: porque é um texto, placeholder: Mensagem dentro do bloco de digitação-->
+            
+            <input id="campo_nome" type="text" placeholder="Digite o nome do convidado">
+            <input id="campo_idade" type="text" placeholder="Digite a idade do convidado">
+            
+        </div>
+        <div class="botaoo">
+            <!-- Inicio Botão Cadastrar convidados, utilizando id para conseguir enviar as informações dos convidados.-->
+            <button id="botao">Cadastrar</button>
+        </div>
         <!-- Fim Botão Cadastrar convidado-->
-    </div>
-    <script type="text/javascript">
-
-        // Inicio variavel para documentar as listas
-        var elLista = document.getElementById("lista");
-        var elCampo_nome = document.getElementById("campo_nome");
-        var elCampo_idade = document.getElementById("campo_idade");
-        var elBotao = document.getElementById("botao");
-        // Fim de variavel para documentar as listas
-
-        // Inicio array em Json dos convidados
-        var convidados = [
-            { nome: "Juliana Tobias", idade: 22 },
-            { nome: "Gabriel Freitas", idade: 18 },
-            { nome: "Gildo Junior", idade: 19 }
-        ];
-        // Fim de array dos convidados
         
-        //É chamado pela function adicionarConvidado
-        function listarConvidados(){
-            //Limpa a lista, para poder inserir o novo convidado
-            elLista.innerHTML = ""
+        <script type="text/javascript">
 
-            for (convidado of convidados) {
-                var elConvidado = document.createElement("li");
-                var elConv = document.createTextNode(`Nome: ${convidado.nome}, Idade: ${convidado.idade}`);
-    
-                elConvidado.appendChild(elConv);
-                elLista.appendChild(elConvidado);
-    
-            }
-        }
+                // Inicio: variavel para documentar as listas
+
+                var elLista = document.getElementById("lista");
+                var elCampo_nome = document.getElementById("campo_nome");
+                var elCampo_idade = document.getElementById("campo_idade");
+                var elBotao = document.getElementById("botao");
+
+                // Fim: variavel para documentar as listas
+
+                // Array em Json dos convidados
+                //Inicio: Lista de convidados, id: numeração da lista, nome: nome do convidado, idade: idade do convidado.
+
+                // Se o JSON.parse retornar nada começamos com o array vazio [].
+
+                var convidados = JSON.parse(localStorage.getItem("convidados")) || [];
+                //Fim: lista de convidados de array dos convidados.
 
 
-        listarConvidados();
+                //É chamado pela function adicionarConvidado.
+                function listarConvidados() {
 
-        //É chamado toda vez que alguem clica no botao
-        var adicionarConvidado = function () {
-            var nome = elCampo_nome.value;
-            var idade = elCampo_idade.value;
-            convidados.push({ nome: nome, idade: idade });
-            elCampo_nome.value = "";
-            elCampo_idade.value = "";
+                    //Limpa a lista, para não ocorrer repetição de convidados em ordem numerica e podendo inserir um novo convidado.
 
-            listarConvidados();
+                    elLista.innerHTML = ""
+                    //const esta criando uma variável cujo o valor é fixo, ou seja, uma constante somente leitura. 
+                    //...Isso não significa que o valor é imutável, apenas que a variável constante não pode ser alterada ou retribuída.
+                    for (const convidado of convidados) {
+                        var elConvidado = document.createElement("li");
+                        var elConv = document.createTextNode(` ${convidado.id} - Nome: ${convidado.nome}, Idade: ${convidado.idade} `);
 
-        };
-        elBotao.onclick = adicionarConvidado;
+                        // Inicio: Função clique excluir convidado da lista.
+                        var elExcluir = document.createElement("a");
+                        elExcluir.setAttribute("href", "#");
+                        elExcluir.onclick = function () {
+                            convidados = convidados.filter(function (item) {
+                                // item é diferente de convidado? Verdadeiro ou Falso.
+                                // Se for verdadeiro Filter percorre o Array, se for false não percorre.
+                                return item.nome !== convidado.nome;
+                            });
 
-    </script>
+                            listarConvidados();
+                            salvarConvidados();
+                        };
 
+                        var elExcluirTexto = document.createTextNode("Excluir");
+                        elExcluir.appendChild(elExcluirTexto);
+                        elConvidado.appendChild(elConv);
+                        elConvidado.appendChild(elExcluir);
+                        elLista.appendChild(elConvidado);
+
+                        // fim: função excluir convidados da lista
+
+                    }
+                }
+
+                listarConvidados();
+
+                //Inicio: retornando um array cujos elementos são os valores das propriedades enumeradas encontradas no id, nome e idade.
+
+                //É chamado toda vez que alguem clica no botao
+                var adicionarConvidado = function () {
+                    var nome = elCampo_nome.value;
+                    var idade = elCampo_idade.value;
+                    var id = convidados.length + 1;
+
+
+                    convidados.push({ id: id, nome: nome, idade: idade });
+                    elCampo_nome.value = "";
+                    elCampo_idade.value = "";
+
+                    listarConvidados();
+                    salvarConvidados();
+                    //Fim do retorno do array id, nome e idade
+                };
+
+                //pedindo pi de local estorte sete grava get pega
+                function salvarConvidados() {
+                    localStorage.setItem("convidados", JSON.stringify(convidados));
+                }
+                // Inicio: Botão cadastrar 
+                elBotao.onclick = adicionarConvidado;
+                 //fim: botão cadastrar
+
+            </script>
+
+        </div>
 </body>
 
 </html>
